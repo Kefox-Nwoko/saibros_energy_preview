@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /tests/
+Disallow: /scripts/
+Disallow: /docs/
+
+Sitemap: https://www.saibrosgroup.com/sitemap.xml
