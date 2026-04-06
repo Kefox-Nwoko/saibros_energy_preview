@@ -36,8 +36,8 @@ function handleContactSubmit(e) {
         submitBtn.innerHTML = originalText;
     };
 
-    // Use Netlify function
-    const FUNCTION_URL = '/.netlify/functions/send-email';
+    // Use Vercel function
+    const FUNCTION_URL = '/api/send-email';
     
     const payload = {
         fullName,
