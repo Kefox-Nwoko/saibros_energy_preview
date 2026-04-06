@@ -36,8 +36,8 @@ function handleContactSubmit(e) {
         submitBtn.innerHTML = originalText;
     };
 
-    // Use Vercel function
-    const FUNCTION_URL = '/api/send-email';
+    // Use Vercel function (works from any domain)
+    const FUNCTION_URL = 'https://saibros-energy-preview.vercel.app/api/send-email';
     
     const payload = {
         fullName,
