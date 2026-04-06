@@ -545,6 +545,16 @@ select:focus-visible,
     .stats-container {
         padding: 3rem 1rem; /* Add 1rem horizontal padding */
     }
+    
+    /* Reduce logo size on mobile */
+    .navbar-brand img {
+        height: 28px !important;
+    }
+    
+    .navbar-brand span {
+        font-size: 7px !important;
+        margin-left: 10px !important;
+    }
 }
 
 .filter-btn {
