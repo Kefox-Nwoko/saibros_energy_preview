@@ -603,13 +603,20 @@ function handleContactSubmit(e) {
     };
 
     // ── Send both emails ────────────────────────────────────────────────────
+    console.log('Sending email with API key:', window.BREVO_API_KEY ? 'Key present' : 'Key missing');
+    console.log('Brevo URL:', BREVO_URL);
+    
     fetch(BREVO_URL, {
         method: 'POST',
         headers,
         body: JSON.stringify(internalEmail)
     })
     .then(res => {
-        if (!res.ok) return res.json().then(e => Promise.reject(e));
+        console.log('First email response status:', res.status);
+        if (!res.ok) return res.json().then(e => {
+            console.error('First email error:', e);
+            return Promise.reject(e);
+        });
         return fetch(BREVO_URL, {
             method: 'POST',
             headers,
@@ -617,7 +624,11 @@ function handleContactSubmit(e) {
         });
     })
     .then(res => {
-        if (!res.ok) return res.json().then(e => Promise.reject(e));
+        console.log('Second email response status:', res.status);
+        if (!res.ok) return res.json().then(e => {
+            console.error('Second email error:', e);
+            return Promise.reject(e);
+        });
         resetUI();
         showToast('Thank you for your message! We will get back to you within 24 hours.', 'success');
         announceToScreenReader('Message sent successfully! We will get back to you within 24 hours.');
