@@ -546,14 +546,24 @@ select:focus-visible,
         padding: 3rem 1rem; /* Add 1rem horizontal padding */
     }
     
-    /* Reduce logo size on mobile */
+    /* Maximize logo size on mobile while keeping menu on right */
+    .navbar-brand {
+        flex: 0 1 auto;
+        max-width: calc(100% - 60px); /* Reserve space for menu button */
+    }
+    
     .navbar-brand img {
-        height: 28px !important;
+        height: 35px !important;
+        max-width: 100%;
     }
     
     .navbar-brand span {
-        font-size: 7px !important;
-        margin-left: 10px !important;
+        font-size: 8px !important;
+        margin-left: 12px !important;
+    }
+    
+    .navbar-toggler {
+        margin-left: auto;
     }
 }
 
