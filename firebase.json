@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "saibros-energy",
     "public": ".",
     "ignore": [
       "firebase.json",

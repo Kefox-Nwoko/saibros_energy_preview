@@ -7,9 +7,6 @@ email-service/node_modules/
 # Environment files
 email-service/.env
 
-# Configuration files with API keys
-config.js
-
 # IDE
 .vscode/
 .kiro/
