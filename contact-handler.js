@@ -4,6 +4,15 @@ function handleContactSubmit(e) {
 
     const form = e.target;
 
+    // Validate reCAPTCHA
+    const recaptchaResponse = grecaptcha.getResponse();
+    if (!recaptchaResponse) {
+        document.getElementById('recaptchaError').style.display = 'block';
+        showToast('Please complete the reCAPTCHA verification.', 'error');
+        return;
+    }
+    document.getElementById('recaptchaError').style.display = 'none';
+
     // Client-side validation
     if (!form.checkValidity()) {
         e.stopPropagation();
@@ -43,17 +52,13 @@ function handleContactSubmit(e) {
         from_email:   form.email.value.trim()
     };
 
-    console.log('Sending via EmailJS...');
-
     // Send internal notification
     emailjs.send(window.EMAILJS_SERVICE_ID, window.EMAILJS_TEMPLATE_CONTACT, templateParams)
         .then(() => {
-            console.log('Contact email sent!');
             // Send auto-reply
             return emailjs.send(window.EMAILJS_SERVICE_ID, window.EMAILJS_TEMPLATE_AUTOREPLY, templateParams);
         })
         .then(() => {
-            console.log('Auto-reply sent!');
             resetUI();
             showToast('Thank you for your message! We will get back to you within 24 hours.', 'success');
             form.reset();
@@ -63,9 +68,6 @@ function handleContactSubmit(e) {
             });
         })
         .catch(err => {
-            console.error('EmailJS error:', JSON.stringify(err));
-            console.error('Status:', err.status);
-            console.error('Text:', err.text);
             resetUI();
             showToast('Failed to send message. Please try again or call us on +234 810 994 1885.', 'error');
         });
