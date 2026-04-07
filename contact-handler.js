@@ -1,4 +1,4 @@
-// Contact Form Handler — Using Netlify Function
+// Contact Form Handler — EmailJS
 function handleContactSubmit(e) {
     e.preventDefault();
 
@@ -10,7 +10,7 @@ function handleContactSubmit(e) {
         form.classList.add('was-validated');
         form.querySelectorAll('input[required], textarea[required]').forEach(input => {
             input.classList.toggle('is-invalid', !input.validity.valid);
-            input.classList.toggle('is-valid',   input.validity.valid);
+            input.classList.toggle('is-valid', input.validity.valid);
         });
         showToast('Please fill in all required fields correctly.', 'error');
         return;
@@ -23,63 +23,47 @@ function handleContactSubmit(e) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
-    const fullName    = form.fullName.value.trim();
-    const companyName = form.companyName.value.trim();
-    const email       = form.email.value.trim();
-    const phone       = form.phone.value.trim();
-    const service     = form.service.value;
-    const message     = form.message.value.trim();
-
     const resetUI = () => {
         hideLoading();
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalText;
     };
 
-    // Use Vercel function (works from any domain)
-    const FUNCTION_URL = 'https://saibros-energy-preview.vercel.app/api/send-email';
-    
-    const payload = {
-        fullName,
-        companyName,
-        email,
-        phone,
-        service,
-        message
+    // Init EmailJS
+    emailjs.init(window.EMAILJS_PUBLIC_KEY);
+
+    const templateParams = {
+        from_name:    form.fullName.value.trim(),
+        company_name: form.companyName.value.trim() || 'Not provided',
+        from_email:   form.email.value.trim(),
+        phone:        form.phone.value.trim(),
+        service:      form.service.value || 'Not specified',
+        message:      form.message.value.trim(),
+        to_email:     'inquiry@saibrosgroup.com'
     };
 
-    console.log('Sending email via serverless function...');
-    
-    fetch(FUNCTION_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(res => {
-        console.log('Response status:', res.status);
-        if (!res.ok) {
-            return res.json().then(e => {
-                console.error('Error response:', e);
-                return Promise.reject(e);
+    console.log('Sending via EmailJS...');
+
+    // Send internal notification
+    emailjs.send(window.EMAILJS_SERVICE_ID, window.EMAILJS_TEMPLATE_CONTACT, templateParams)
+        .then(() => {
+            console.log('Contact email sent!');
+            // Send auto-reply
+            return emailjs.send(window.EMAILJS_SERVICE_ID, window.EMAILJS_TEMPLATE_AUTOREPLY, templateParams);
+        })
+        .then(() => {
+            console.log('Auto-reply sent!');
+            resetUI();
+            showToast('Thank you for your message! We will get back to you within 24 hours.', 'success');
+            form.reset();
+            form.classList.remove('was-validated');
+            form.querySelectorAll('input, textarea, select').forEach(el => {
+                el.classList.remove('is-valid', 'is-invalid');
             });
-        }
-        return res.json();
-    })
-    .then(data => {
-        console.log('Success:', data);
-        resetUI();
-        showToast('Thank you for your message! We will get back to you within 24 hours.', 'success');
-        form.reset();
-        form.classList.remove('was-validated');
-        form.querySelectorAll('input, textarea, select').forEach(el => {
-            el.classList.remove('is-valid', 'is-invalid');
+        })
+        .catch(err => {
+            console.error('EmailJS error:', err);
+            resetUI();
+            showToast('Failed to send message. Please try again or call us on +234 810 994 1885.', 'error');
         });
-    })
-    .catch(err => {
-        console.error('Error:', err);
-        resetUI();
-        showToast('Failed to send message. Please try again or call us directly on +234 810 994 1885.', 'error');
-    });
 }
