@@ -33,13 +33,14 @@ function handleContactSubmit(e) {
     emailjs.init(window.EMAILJS_PUBLIC_KEY);
 
     const templateParams = {
-        from_name:    form.fullName.value.trim(),
+        name:         form.fullName.value.trim(),
         company_name: form.companyName.value.trim() || 'Not provided',
-        from_email:   form.email.value.trim(),
+        email:        form.email.value.trim(),
         phone:        form.phone.value.trim(),
-        service:      form.service.value || 'Not specified',
+        title:        form.service.value || 'Not specified',
         message:      form.message.value.trim(),
-        to_email:     'inquiry@saibrosgroup.com'
+        from_name:    form.fullName.value.trim(),
+        from_email:   form.email.value.trim()
     };
 
     console.log('Sending via EmailJS...');
@@ -62,7 +63,9 @@ function handleContactSubmit(e) {
             });
         })
         .catch(err => {
-            console.error('EmailJS error:', err);
+            console.error('EmailJS error:', JSON.stringify(err));
+            console.error('Status:', err.status);
+            console.error('Text:', err.text);
             resetUI();
             showToast('Failed to send message. Please try again or call us on +234 810 994 1885.', 'error');
         });
