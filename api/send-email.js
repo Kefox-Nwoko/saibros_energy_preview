@@ -26,6 +26,18 @@ export default async function handler(req, res) {
   }
 
   const BREVO_API_KEY = process.env.BREVO_API_KEY;
+  
+  // Debug logging
+  console.log('Environment check:', {
+    hasApiKey: !!BREVO_API_KEY,
+    apiKeyLength: BREVO_API_KEY ? BREVO_API_KEY.length : 0
+  });
+  
+  if (!BREVO_API_KEY) {
+    console.error('BREVO_API_KEY environment variable is not set');
+    return res.status(500).json({ error: 'Server configuration error: API key not found' });
+  }
+  
   const BREVO_URL = 'https://api.brevo.com/v3/smtp/email';
 
   const headers = {
@@ -103,11 +115,14 @@ export default async function handler(req, res) {
 
   try {
     // Send internal notification
+    console.log('Attempting to send email to Brevo API...');
     const response1 = await fetch(BREVO_URL, {
       method: 'POST',
       headers,
       body: JSON.stringify(internalEmail)
     });
+
+    console.log('Brevo API response status:', response1.status);
 
     if (!response1.ok) {
       const error = await response1.json();
