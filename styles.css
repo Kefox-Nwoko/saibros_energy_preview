@@ -572,6 +572,20 @@ select:focus-visible,
     }
 }
 
+/* Mobile navbar active state styling */
+@media (max-width: 991px) {
+    /* Remove green underline indicator in mobile navbar */
+    .nav-link::after {
+        display: none !important;
+    }
+    
+    /* Make active nav link bold and green */
+    .nav-link.active {
+        font-weight: 700 !important;
+        color: var(--accent-orange) !important;
+    }
+}
+
 .filter-btn {
     border: 2px solid var(--primary-blue);
     color: var(--primary-blue);
