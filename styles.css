@@ -531,11 +531,11 @@ select:focus-visible,
     }
     
     .mobile-bottom-nav {
-        display: flex;
+        display: none !important;
     }
     
     body {
-        padding-bottom: 70px;
+        padding-bottom: 0;
     }
     
     .stats-card {
