@@ -168,7 +168,7 @@ const fallbackVesselData = {
     },
     kayla: {
         id: 'kayla',
-        name: 'MISS KAYLA',
+        name: 'MV MISS KAYLA',
         type: 'Aluminium Crewboat',
         image: 'image/kayla.webp',
         specs: {
@@ -285,7 +285,7 @@ const fallbackVesselData = {
         specs: {
             // --- Core 7 (always visible) ---
             'Capacity': '50 Persons Certified',
-            'Hull': 'Steel',
+            'Hull': 'Aluminium',
             'Length': '33.53 m',
             'Breadth': '7.32 m',
             'Draft': '1.88 m',
