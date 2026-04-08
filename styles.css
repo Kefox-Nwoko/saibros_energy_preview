@@ -565,6 +565,11 @@ select:focus-visible,
     .navbar-toggler {
         margin-left: auto;
     }
+    
+    /* Add extra spacing between Contact and Call Now in mobile navbar */
+    .navbar-collapse .nav-item:last-child {
+        margin-bottom: 15px;
+    }
 }
 
 .filter-btn {
